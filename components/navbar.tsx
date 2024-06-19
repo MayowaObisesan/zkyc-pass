@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Navbar as NextUINavbar,
   NavbarContent,
@@ -25,6 +27,20 @@ import {
   SearchIcon,
   Logo,
 } from "@/components/icons";
+import { ConnectButton } from "thirdweb/react";
+import { client } from "@/app/client";
+import { arbitrumSepolia } from "thirdweb/chains";
+
+// const wallets = [
+//   createWallet("io.metamask"),
+//   createWallet("com.coinbase.wallet"),
+//   walletConnect(),
+//   inAppWallet({
+//     auth: {
+//       options: ["email", "google", "apple", "facebook", "phone"],
+//     },
+//   }),
+// ];
 
 export const Navbar = () => {
   const searchInput = (
@@ -54,7 +70,7 @@ export const Navbar = () => {
         <NavbarBrand as="li" className="gap-3 max-w-fit">
           <NextLink className="flex justify-start items-center gap-1" href="/">
             <Logo />
-            <p className="font-bold text-inherit">ACME</p>
+            <p className="font-bold text-inherit">ZKYC</p>
           </NextLink>
         </NavbarBrand>
         <ul className="hidden lg:flex gap-4 justify-start ml-2">
@@ -63,7 +79,7 @@ export const Navbar = () => {
               <NextLink
                 className={clsx(
                   linkStyles({ color: "foreground" }),
-                  "data-[active=true]:text-primary data-[active=true]:font-medium",
+                  "data-[active=true]:text-primary data-[active=true]:font-medium"
                 )}
                 color="foreground"
                 href={item.href}
@@ -92,7 +108,7 @@ export const Navbar = () => {
           <ThemeSwitch />
         </NavbarItem>
         <NavbarItem className="hidden lg:flex">{searchInput}</NavbarItem>
-        <NavbarItem className="hidden md:flex">
+        <NavbarItem className="hidden md:flex gap-x-4">
           <Button
             isExternal
             as={Link}
@@ -103,6 +119,27 @@ export const Navbar = () => {
           >
             Sponsor
           </Button>
+          <Button color="primary" variant="shadow">
+            Connect Wallet
+          </Button>
+
+          <ConnectButton
+            client={client}
+            chain={arbitrumSepolia}
+            appMetadata={{
+              name: "Peeps",
+              url: "https://peeps-dev.vercel.app",
+              description: "Peeps is a decentralized social media platform",
+            }}
+            connectButton={{
+              className: "connect-button",
+              label: "Connect wallet",
+            }}
+            walletConnect={{ projectId: "7f49c7e89e54528522eef8334c58506e" }}
+            theme={"dark"}
+            connectModal={{ size: "wide" }}
+          />
+          {/* <ConnectWallet /> */}
         </NavbarItem>
       </NavbarContent>
 
@@ -124,8 +161,8 @@ export const Navbar = () => {
                   index === 2
                     ? "primary"
                     : index === siteConfig.navMenuItems.length - 1
-                      ? "danger"
-                      : "foreground"
+                    ? "danger"
+                    : "foreground"
                 }
                 href="#"
                 size="lg"
